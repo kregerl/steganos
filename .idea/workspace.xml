@@ -9,7 +9,14 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="remade the entire program, now it hides text in the lsb of each byte." />
+    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="remade the entire program, now it hides text in the lsb of each byte.">
+      <change afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.png" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -17,6 +24,13 @@
   </component>
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Rust File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,8 +70,13 @@
     </key>
   </component>
   <component name="RunManager" selected="Cargo.Read">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Read" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run --package stegnog --bin stegnog read test.png" />
+      <option name="command" value="run --package steganos --bin steganos read test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -73,7 +92,7 @@
       </method>
     </configuration>
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run --package stegnog --bin stegnog in maroon.png out test.png " />
+      <option name="command" value="run --package steganos --bin steganos in original.png out test.png " />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -107,6 +126,8 @@
       <option name="presentableId" value="Default" />
       <updated>1656450958918</updated>
       <workItem from="1656450960574" duration="9050000" />
+      <workItem from="1656541196856" duration="6113000" />
+      <workItem from="1656556144045" duration="1039000" />
     </task>
     <task id="LOCAL-00001" summary="remade the entire program, now it hides text in the lsb of each byte.">
       <created>1656463119574</created>

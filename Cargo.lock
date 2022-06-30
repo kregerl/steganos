@@ -499,7 +499,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "stegnog"
+name = "steganos"
 version = "0.1.0"
 dependencies = [
  "bitreader",
