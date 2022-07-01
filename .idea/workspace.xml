@@ -9,13 +9,11 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="remade the entire program, now it hides text in the lsb of each byte.">
-      <change afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
+    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="Added a header for the reader to understand what type of media to convert the binary to after reading it all. Created byte struct to obfuscate away some bitshifts.">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/byteutils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,11 +68,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Cargo.Read">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Read" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package steganos --bin steganos read test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -107,6 +100,11 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Cargo.Run" />
       <item itemvalue="Cargo.Read" />
@@ -127,7 +125,8 @@
       <updated>1656450958918</updated>
       <workItem from="1656450960574" duration="9050000" />
       <workItem from="1656541196856" duration="6113000" />
-      <workItem from="1656556144045" duration="1039000" />
+      <workItem from="1656556144045" duration="2454000" />
+      <workItem from="1656621731655" duration="16060000" />
     </task>
     <task id="LOCAL-00001" summary="remade the entire program, now it hides text in the lsb of each byte.">
       <created>1656463119574</created>
@@ -136,7 +135,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656463119574</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added a header for the reader to understand what type of media to convert the binary to after reading it all. Created byte struct to obfuscate away some bitshifts.">
+      <created>1656557188770</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1656557188770</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,7 +162,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="remade the entire program, now it hides text in the lsb of each byte." />
-    <option name="LAST_COMMIT_MESSAGE" value="remade the entire program, now it hides text in the lsb of each byte." />
+    <MESSAGE value="Added a header for the reader to understand what type of media to convert the binary to after reading it all. Created byte struct to obfuscate away some bitshifts." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a header for the reader to understand what type of media to convert the binary to after reading it all. Created byte struct to obfuscate away some bitshifts." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
