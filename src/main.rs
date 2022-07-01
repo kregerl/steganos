@@ -1,13 +1,22 @@
 mod byteutils;
+mod cli;
 
 use std::io::{Write, stdin, stdout};
 use std::env;
 use std::path::Path;
+use clap::{App, Arg};
 use image::{RgbaImage, GenericImageView, DynamicImage, Pixel, ColorType, Rgba};
 use crate::byteutils::{Byte, EncodedType, get_lsb};
+use crate::cli::SteganosArgs;
 
 // TODO: Switch cmdline args to CLAP https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html
 fn main() {
+    let new_args = SteganosArgs::new();
+
+    let original_image = new_args.get_original_image();
+    let text = new_args.get_text();
+    let output_name = new_args.get_output_name();
+
     let args: Vec<String> = env::args().collect();
 
     let usage = "USAGE:

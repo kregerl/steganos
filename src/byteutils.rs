@@ -60,10 +60,6 @@ impl Byte {
         }
     }
 
-    pub fn get_lsb(&self) -> bool {
-        get_lsb(self.byte)
-    }
-
     pub fn get_bits(&self) -> Vec<bool> {
         let mut bits: Vec<bool> = Vec::new();
         for n in 0..8 {
