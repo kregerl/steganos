@@ -1,6 +1,6 @@
 # Steganos
 
-Name is the greek that means "covered" or "hidden"
+Name is the greek word that means "covered" or "hidden"
 
 Steganos is a form of least significant bit [Steganography](https://en.wikipedia.org/wiki/Steganography) that hides text
 or images inside other images.
