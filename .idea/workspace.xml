@@ -9,12 +9,11 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="Added decoding the messages">
-      <change afterPath="$PROJECT_DIR$/src/cli.rs" afterDir="false" />
+    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="Added better argument parsing for commandline uses, will need to allow piping in data">
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.lock" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/byteutils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/cli.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -71,7 +70,7 @@
   </component>
   <component name="RunManager" selected="Cargo.Read">
     <configuration name="Read" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run --package steganos --bin steganos read test.png" />
+      <option name="command" value="run --package steganos --bin steganos -r test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -128,7 +127,9 @@
       <workItem from="1656450960574" duration="9050000" />
       <workItem from="1656541196856" duration="6113000" />
       <workItem from="1656556144045" duration="2454000" />
-      <workItem from="1656621731655" duration="19663000" />
+      <workItem from="1656621731655" duration="20408000" />
+      <workItem from="1656703326862" duration="4472000" />
+      <workItem from="1656715303066" duration="6168000" />
     </task>
     <task id="LOCAL-00001" summary="remade the entire program, now it hides text in the lsb of each byte.">
       <created>1656463119574</created>
@@ -151,7 +152,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656643198615</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added better argument parsing for commandline uses, will need to allow piping in data">
+      <created>1656647274459</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1656647274459</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -174,7 +182,8 @@
     <MESSAGE value="Added a header for the reader to understand what type of media to convert the binary to after reading it all. Created byte struct to obfuscate away some bitshifts." />
     <MESSAGE value="Add decoding the messages" />
     <MESSAGE value="Added decoding the messages" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added decoding the messages" />
+    <MESSAGE value="Added better argument parsing for commandline uses, will need to allow piping in data" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added better argument parsing for commandline uses, will need to allow piping in data" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

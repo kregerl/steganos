@@ -7,60 +7,30 @@ use std::path::Path;
 use clap::{App, Arg};
 use image::{RgbaImage, GenericImageView, DynamicImage, Pixel, ColorType, Rgba};
 use crate::byteutils::{Byte, EncodedType, get_lsb};
-use crate::cli::SteganosArgs;
+use crate::cli::{ArgType, Arguments};
 
-// TODO: Switch cmdline args to CLAP https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html
 fn main() {
-    let new_args = SteganosArgs::new();
+    match Arguments::new().args {
+        ArgType::Write(wa) => {
+            let img = open_image(&wa.input);
 
-    let original_image = new_args.get_original_image();
-    let text = new_args.get_text();
-    let output_name = new_args.get_output_name();
-
-    let args: Vec<String> = env::args().collect();
-
-    let usage = "USAGE:
-    stegnog [OPTIONS]
-OPTIONS:
-    -in <original_png> -out <output_png> 
-    -read <input_png>
-	-in <original_png> -out <output_png> -embed <embed_png>";
-
-    if args.len() == 5 {
-        println!("{:?}", args);
-        if args[1] == "in" && args[3] == "out" {
-            let img = image::open(&args[2]).unwrap();
-
-            const TEXT: &str = "           __
-             <(o )___
-              ( ._> /
-               `---'  ";
-
-            embed_text_in_image(img, TEXT, &args[4]);
+            embed_text_in_image(img, wa.data.as_str(), wa.output.as_str());
         }
-    } else if args.len() == 3 {
-        if args[1] == "read" {
-            let img = image::open(&args[2]).unwrap();
+        ArgType::Read(ra) => {
+            let img = open_image(&ra.input);
 
-            read_image(img);
+            decode_image(img, ra.hexdump);
         }
-    } else if args.len() == 7 {
-        // if args[1] == "in" && args[3] == "out" && args[5] == "embed" {
-        //     let img = image::open(&args[2]).unwrap();
-        //     let embed = image::open(&args[6]).unwrap();
-        //
-        //     let bits = convert_image_to_bits(embed);
-        //     write_bits_to_image(img, &args[4], bits);
-        // }
-    } else {
-        println!("{}", usage);
     }
 }
 
-fn read_image(image: DynamicImage) {
+fn decode_image(image: DynamicImage, hexdump: bool) {
     let mut encoded_contents: Vec<bool> = Vec::new();
 
     let mut num_consecutive_zeros = 0;
+    // Loop over every channel in the image and pull out the lsb from each, stopping at the ending(null)
+    // byte
+    // TODO: Change this from a nullbyte to a sequence of chars. Makes the embedded data larger but is easier to stop at.
     'outer: for (_, _, pixel) in image.pixels() {
         for color in pixel.0 {
             let bit = get_lsb(color);
@@ -78,20 +48,35 @@ fn read_image(image: DynamicImage) {
 
     let mut bytes: Vec<Byte> = encoded_contents.chunks(8).map(|chunk| Byte::from(chunk)).collect();
 
-    let body = bytes.split_off(3);
-    let header: String = bytes.iter().map(|c| c.as_char()).collect();
+    if hexdump {
+        dump_bytes(bytes);
+    } else {
+        // Split the body from the header at index `header_size`, leaves the first `header_size` bytes on
+        // the `bytes` vec.
+        let body = bytes.split_off(EncodedType::header_size());
+        let header: String = bytes.iter().map(|c| c.as_char()).collect();
 
-    match header.as_str() {
-        "txt" => { println!("Decoded message: \n\t{}", read_bytes_as_text(body)) }
-        "img" => {
-            read_bytes_as_image(body);
-        }
-        _ => {
-            println!("Unknown header type, dumping output.");
-            for byte in bytes[3..].iter() {
-                byte.print_bits();
+        match header.as_str() {
+            "txt" => { println!("Decoded message: \n\t{}", read_bytes_as_text(body)) }
+            "img" => {
+                read_bytes_as_image(body);
+            }
+            _ => {
+                println!("Unknown header type, dumping output.");
+                for byte in bytes[EncodedType::header_size()..].iter() {
+                    byte.print_bits();
+                }
             }
         }
+    }
+}
+
+fn dump_bytes(bytes: Vec<Byte>) {
+    for chunk in bytes.chunks(8) {
+        for byte in chunk {
+            print!("{:#04x}\t", byte.byte);
+        }
+        println!();
     }
 }
 
@@ -115,7 +100,10 @@ fn embed_image_in_image(original: DynamicImage, image_to_embed: DynamicImage, ou
 fn write_bits_to_image(original_image: DynamicImage, bits: Vec<bool>) -> RgbaImage {
     let mut bit_iter = bits.iter();
     let (width, height) = original_image.dimensions();
+    // Create new blank image with same dimensions
     let mut image = RgbaImage::new(width, height);
+    /* Copy each pixel from the original image into the new image but replace the lsb of each color
+    channel with a bit from the embedded data. */
     for (x, y, mut pixel) in original_image.pixels() {
         pixel = pixel.map(|color| {
             if let Some(bit) = bit_iter.next() {
@@ -131,6 +119,7 @@ fn write_bits_to_image(original_image: DynamicImage, bits: Vec<bool>) -> RgbaIma
 fn read_bytes_as_text(bytes: Vec<Byte>) -> String {
     let mut result = String::new();
 
+    // Read bytes, ignoring null bytes
     for byte in bytes {
         if Byte::zero() != byte {
             result.push(byte.as_char());
@@ -150,6 +139,15 @@ fn save_image(image: RgbaImage, output_path: &str) {
     match result {
         Ok(_) => { println!("Wrote image to {}", output_path); }
         Err(err) => { eprintln!("Error writing image to path: {}", err); }
+    }
+}
+
+fn open_image(path: &str) -> DynamicImage {
+    match image::open(path) {
+        Ok(img) => img,
+        Err(err) => {
+            panic!("Error reading the original image. {}", err);
+        }
     }
 }
 

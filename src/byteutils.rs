@@ -6,6 +6,7 @@ pub enum EncodedType {
 }
 
 impl EncodedType {
+    // Headers must be the same length
     fn header(&self) -> &str {
         match *self {
             EncodedType::Text(_) => "txt",
@@ -40,11 +41,15 @@ impl EncodedType {
     pub fn to_bits(&self) -> Vec<bool> {
         self.to_bytes().iter().map(|b| b.get_bits()).flatten().collect()
     }
+
+    pub fn header_size() -> usize {
+        3
+    }
 }
 
 #[derive(PartialEq, Clone)]
 pub struct Byte {
-    byte: u8,
+    pub byte: u8,
 }
 
 impl Byte {
@@ -116,6 +121,9 @@ impl From<&[bool]> for Byte {
     }
 }
 
+// Gets the least significant bit from the `byte` param
+// 0b01001010
+// ---------^
 pub fn get_lsb(byte: u8) -> bool {
     byte & 1 != 0
 }

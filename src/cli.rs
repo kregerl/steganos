@@ -1,61 +1,109 @@
-use std::ffi::OsString;
-use clap::{App, Arg};
+extern crate proc_macro;
+
+use clap::{App, Arg, SubCommand};
 use image::{DynamicImage};
 
 #[derive(Debug, PartialEq)]
-pub struct SteganosArgs {
-    original_image_path: String,
-    input: String,
-    output_image_name: String,
+pub enum ArgType {
+    Write(WriteArgument),
+    Read(ReadArgument),
 }
 
-impl SteganosArgs {
-    pub fn new() -> Self {
-        Self::new_from(std::env::args_os().into_iter()).unwrap_or_else(|e| e.exit())
-    }
+#[derive(Debug, PartialEq)]
+pub struct WriteArgument {
+    pub input: String,
+    pub data: String,
+    pub output: String,
+}
 
-    fn new_from<I, T>(args: I) -> Result<Self, clap::Error> where
-        I: Iterator<Item=T>, T: Into<OsString> + Clone {
+#[derive(Debug, PartialEq)]
+pub struct ReadArgument {
+    pub input: String,
+    pub hexdump: bool,
+}
+
+impl WriteArgument {
+    pub fn new(input: String, data: String, output: String) -> Self {
+        Self {
+            input,
+            data,
+            output,
+        }
+    }
+}
+
+
+impl ReadArgument {
+    pub fn new(input: String, hexdump: bool) -> Self {
+        Self {
+            input,
+            hexdump,
+        }
+    }
+}
+
+
+#[derive(Debug, PartialEq)]
+pub struct Arguments {
+    pub(crate) args: ArgType,
+}
+
+impl Arguments {
+    pub fn new() -> Self {
         let matches = App::new("Steganos")
             .version("0.1.0")
             .about("Embeds text and images into the least significant bits of another image and provides a method of retrieving them again.")
-            .arg(Arg::with_name("original")
-                .short('o')
-                .takes_value(true)
-                .help("The original image that will be copied and embedded with other data."))
-            .arg(Arg::with_name("input")
-                .short('i').
-                takes_value(true).
-                min_values(0).// TODO: Fix this help, make it clear how the size is calculated.
-                help("The data that will be embedded into the original image. \
-            This can either be some text or an image however it can embed any file type as long as it will fit within the original image. "))
-            .arg(Arg::with_name("name")
-                .short('n')
-                .takes_value(true)
-                .help("The name of the newly created image."))
-            .get_matches_from_safe(args)?;
+            .subcommand(SubCommand::with_name("write")
+                .about("Use if writing data into an image")
+                .arg(Arg::with_name("input")
+                    .short('i')
+                    .long("input")
+                    .takes_value(true)
+                    .required(true)
+                    .help("The input image that will be copied and embedded with other data."))
+                .arg(Arg::with_name("data")
+                    .short('d')
+                    .long("data")
+                    .takes_value(true)
+                    .required(true)
+                    .help("The data that will be embedded into the original image. \
+                          This can either be some text or an image however it can embed any file type as long as it will fit within the original image."))
+                .arg(Arg::with_name("output")
+                    .short('o')
+                    .long("output")
+                    .takes_value(true)
+                    .required(true)
+                    .help("The name of the newly created image.")))
+            .subcommand(SubCommand::with_name("read")
+                .about("Use for reading data from the least significant bits an image.")
+                .arg(Arg::with_name("input")
+                    .short('i')
+                    .long("input")
+                    .required(true)
+                    .takes_value(true)
+                    .required(true)
+                    .help("The path a file with embedded data to extract."))
+                .arg(Arg::with_name("hexdump")
+                    .short('d')
+                    .long("hexdump")
+                    .help("If enabled, instead of attempting to parse the text, the bytes will be dumped in hexadecimal format."))
+            ).get_matches();
 
-        Ok(Self {
-            original_image_path: String::from(matches.value_of("original").expect("The original input image is required.")),
-            input: String::from(matches.value_of("input").expect("TODO: Allow this to be empty, get the input from stdin.")),
-            output_image_name: String::from(matches.value_of("name").expect("A name for the output image is required.")),
-        })
-    }
 
-    pub fn get_original_image(&self) -> DynamicImage {
-        match image::open(&self.original_image_path) {
-            Ok(img) => img,
-            Err(err) => {
-                panic!("Error reading the original image. {}", err);
+        if let Some(read) = matches.subcommand_matches("read") {
+            Self {
+                args: ArgType::Read(ReadArgument::new(read.value_of("input").unwrap().to_string(), read.is_present("hexdump")))
             }
+        } else if let Some(write) = matches.subcommand_matches("write") {
+            let write_args = WriteArgument::new(
+                write.value_of("input").unwrap().to_string(),
+                write.value_of("data").unwrap().to_string(),
+                write.value_of("output").unwrap().to_string());
+            Self {
+                args: ArgType::Write(write_args)
+            }
+        } else {
+            panic!("How did we get here? Please submit an issue on github at https://github.com/kregerl/steganos/issues with steps to reproduce this error.")
         }
-    }
-
-    pub fn get_text(&self) -> &str {
-        &self.input
-    }
-
-    pub fn get_output_name(&self) -> &str {
-        &self.output_image_name
     }
 }
