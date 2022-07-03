@@ -27,6 +27,18 @@ impl EncodedType {
                 }
             }
             EncodedType::RgbaPng(image) => {
+                let (width, height) = image.dimensions();
+
+                // Stores the images dimensions bytes to be embedded
+                //        w   h
+                // header800|600|<data>
+                let mut dims: Vec<Byte> = Vec::new();
+                dims.append(&mut Byte::from_u32(width));
+                dims.push(Byte::from('|'));
+                dims.append(&mut Byte::from_u32(height));
+                dims.push(Byte::from('|'));
+
+                bytes.append(&mut dims);
                 for (_, _, pixel) in image.pixels() {
                     for color in pixel.0 {
                         bytes.push(Byte::new(color));
@@ -34,7 +46,8 @@ impl EncodedType {
                 }
             }
         }
-        bytes.push(Byte::zero());
+        // TODO: Change this to a special character list, maybe $t36an0s (steganos)
+        bytes.append(&mut Byte::from_str("####"));
         bytes
     }
 
@@ -63,6 +76,18 @@ impl Byte {
         Self {
             byte: 0
         }
+    }
+
+    pub fn from_u32(num: u32) -> Vec<Byte> {
+        num.to_be_bytes().to_vec().iter().map(|byte| Byte::new(*byte)).collect()
+    }
+
+    pub fn from_str(s: &str) -> Vec<Byte> {
+        let mut result: Vec<Byte> = Vec::new();
+        for c in s.chars() {
+            result.push(Byte::from(c));
+        }
+        result
     }
 
     pub fn get_bits(&self) -> Vec<bool> {

@@ -1,5 +1,6 @@
 extern crate proc_macro;
 
+use std::path::Path;
 use clap::{App, Arg, SubCommand};
 use image::{DynamicImage};
 
@@ -10,6 +11,7 @@ pub enum ArgType {
 }
 
 #[derive(Debug, PartialEq)]
+// The only valid arg for data is a image file path or text.
 pub struct WriteArgument {
     pub input: String,
     pub data: String,
@@ -29,6 +31,10 @@ impl WriteArgument {
             data,
             output,
         }
+    }
+
+    pub fn is_data_file(&self) -> bool {
+        Path::new(&self.data).exists()
     }
 }
 

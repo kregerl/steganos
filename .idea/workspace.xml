@@ -9,9 +9,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="Added better argument parsing for commandline uses, will need to allow piping in data">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="fixed README.md">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/byteutils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cli.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
@@ -70,7 +70,7 @@
   </component>
   <component name="RunManager" selected="Cargo.Read">
     <configuration name="Read" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run --package steganos --bin steganos -r test.png" />
+      <option name="command" value="run --package steganos --bin steganos -- read -i test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -86,7 +86,7 @@
       </method>
     </configuration>
     <configuration name="Run" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
-      <option name="command" value="run --package steganos --bin steganos in original.png out test.png " />
+      <option name="command" value="run --package steganos --bin steganos -- write -i sus.png -d crab.png -o test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -129,7 +129,9 @@
       <workItem from="1656556144045" duration="2454000" />
       <workItem from="1656621731655" duration="20408000" />
       <workItem from="1656703326862" duration="4472000" />
-      <workItem from="1656715303066" duration="6168000" />
+      <workItem from="1656715303066" duration="8526000" />
+      <workItem from="1656776135939" duration="5522000" />
+      <workItem from="1656793844776" duration="8219000" />
     </task>
     <task id="LOCAL-00001" summary="remade the entire program, now it hides text in the lsb of each byte.">
       <created>1656463119574</created>
@@ -159,7 +161,21 @@
       <option name="project" value="LOCAL" />
       <updated>1656647274459</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added README.md and added better arg handling.">
+      <created>1656721659875</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1656721659875</updated>
+    </task>
+    <task id="LOCAL-00006" summary="fixed README.md">
+      <created>1656721785604</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1656721785604</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -183,7 +199,16 @@
     <MESSAGE value="Add decoding the messages" />
     <MESSAGE value="Added decoding the messages" />
     <MESSAGE value="Added better argument parsing for commandline uses, will need to allow piping in data" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added better argument parsing for commandline uses, will need to allow piping in data" />
+    <MESSAGE value="Added README.md and added better arg handling." />
+    <MESSAGE value="fixed README.md" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed README.md" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="CargoCommandRunConfiguration">
+        <watch expression="pixel" language="Rust" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
