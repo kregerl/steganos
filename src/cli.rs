@@ -1,8 +1,5 @@
-extern crate proc_macro;
-
 use std::path::Path;
 use clap::{App, Arg, SubCommand};
-use image::{DynamicImage};
 
 #[derive(Debug, PartialEq)]
 pub enum ArgType {

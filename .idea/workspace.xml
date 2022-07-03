@@ -9,9 +9,13 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="fixed README.md">
+    <list default="true" id="60650d1a-5a1d-406c-b69f-a603ea4cdd6f" name="Changes" comment="Finished image in image steganography, just needs to be polished.">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/binary.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/maroon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/original.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/byteutils.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/byteutils.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/cli.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/cli.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.rs" afterDir="false" />
@@ -69,6 +73,11 @@
     </key>
   </component>
   <component name="RunManager" selected="Cargo.Read">
+    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Read" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run --package steganos --bin steganos -- read -i test.png" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
@@ -101,11 +110,6 @@
         <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="GradleAppRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.cpp.gradle.execution.GradleNativeBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Cargo.Run" />
       <item itemvalue="Cargo.Read" />
@@ -131,7 +135,8 @@
       <workItem from="1656703326862" duration="4472000" />
       <workItem from="1656715303066" duration="8526000" />
       <workItem from="1656776135939" duration="5522000" />
-      <workItem from="1656793844776" duration="8219000" />
+      <workItem from="1656793844776" duration="10301000" />
+      <workItem from="1656860316916" duration="543000" />
     </task>
     <task id="LOCAL-00001" summary="remade the entire program, now it hides text in the lsb of each byte.">
       <created>1656463119574</created>
@@ -175,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656721785604</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Finished image in image steganography, just needs to be polished.">
+      <created>1656809159122</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1656809159122</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -201,7 +213,8 @@
     <MESSAGE value="Added better argument parsing for commandline uses, will need to allow piping in data" />
     <MESSAGE value="Added README.md and added better arg handling." />
     <MESSAGE value="fixed README.md" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed README.md" />
+    <MESSAGE value="Finished image in image steganography, just needs to be polished." />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished image in image steganography, just needs to be polished." />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

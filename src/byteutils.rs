@@ -46,8 +46,7 @@ impl EncodedType {
                 }
             }
         }
-        // TODO: Change this to a special character list, maybe $t36an0s (steganos)
-        bytes.append(&mut Byte::from_str("####"));
+        bytes.append(&mut Byte::ending_seq());
         bytes
     }
 
@@ -78,6 +77,7 @@ impl Byte {
         }
     }
 
+
     pub fn from_u32(num: u32) -> Vec<Byte> {
         num.to_be_bytes().to_vec().iter().map(|byte| Byte::new(*byte)).collect()
     }
@@ -88,6 +88,10 @@ impl Byte {
             result.push(Byte::from(c));
         }
         result
+    }
+
+    pub fn ending_seq() -> Vec<Byte> {
+        Byte::from_str("$t36an0s")
     }
 
     pub fn get_bits(&self) -> Vec<bool> {

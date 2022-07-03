@@ -1,11 +1,8 @@
 mod byteutils;
 mod cli;
 
-use std::io::{Write, stdin, stdout};
-use std::env;
 use std::path::Path;
-use clap::{App, Arg};
-use image::{RgbaImage, GenericImageView, DynamicImage, Pixel, ColorType, Rgba, Pixels, ImageBuffer};
+use image::{RgbaImage, GenericImageView, DynamicImage, Pixel, ColorType, Rgba};
 use crate::byteutils::{Byte, EncodedType, get_lsb};
 use crate::cli::{ArgType, Arguments};
 
@@ -30,10 +27,9 @@ fn main() {
 }
 
 fn decode_image(image: DynamicImage, hexdump: bool) {
-    // TODO: Change delimiter again
-    // Loop over every channel in the image and pull out the lsb from each, stopping at the '####'
+    // Loop over every channel in the image and pull out the lsb from each, stopping at 'ending_seq()'
     let pixels: Vec<(u32, u32, Rgba<u8>)> = image.pixels().into_iter().collect();
-    let mut consecutive_pound_signs = 0;
+    let mut consecutive_ending_seq_byte = 0;
     let mut bytes: Vec<Byte> = Vec::new();
     for pixel_group in pixels.chunks(2) {
         let mut bit_list: Vec<bool> = Vec::new();
@@ -43,18 +39,16 @@ fn decode_image(image: DynamicImage, hexdump: bool) {
             }
         }
         let byte = Byte::from(&bit_list[..]);
-        if byte.as_char() == '#' {
-            consecutive_pound_signs += 1;
+        if byte == Byte::ending_seq()[consecutive_ending_seq_byte] {
+            consecutive_ending_seq_byte += 1;
         } else {
-            consecutive_pound_signs = 0;
+            consecutive_ending_seq_byte = 0;
         }
         bytes.push(byte);
-        if consecutive_pound_signs == 4 {
+        if consecutive_ending_seq_byte == Byte::ending_seq().len() {
             break;
         }
     }
-
-    println!("bytes len before: {}", bytes.len());
 
     if hexdump {
         dump_bytes(bytes);
@@ -100,11 +94,12 @@ fn embed_image_in_image(original: DynamicImage, image_to_embed: DynamicImage, ou
     let (embed_width, embed_height) = image_to_embed.dimensions();
     let (original_width, original_height) = original.dimensions();
     // Number of bytes in the image (4 channel RGBA).
-    let expected_pixels = (original_width * original_height) * 4;
+    let expected_bytes = (original_width * original_height) * 4;
+    let num_bytes = (embed_width * embed_height) * NUM_BITS_PER_PIXEL;
     const NUM_BITS_PER_PIXEL: u32 = 32;
 
-    if (embed_width * embed_height) * NUM_BITS_PER_PIXEL > expected_pixels {
-        panic!("The image specified is too big to fit into the desired image. Expected an image with less than {} pixels", expected_pixels);
+    if num_bytes > expected_bytes {
+        panic!("The image specified is too big to fit into the desired image. Expected an image with less than {} bytes but got an image with {} bytes", expected_bytes, num_bytes);
     }
 
     let bits = EncodedType::RgbaPng(image_to_embed).to_bits();
@@ -132,7 +127,7 @@ fn write_bits_to_image(original_image: DynamicImage, bits: Vec<bool>) -> RgbaIma
         });
         image.put_pixel(x, y, pixel);
     }
-    println!("Wrote {} bytes containing {} pixels into the image.", bit_count / 8, ((bit_count / 8) - (4 + 3 + 10)) / 4);
+    println!("Wrote {} bytes into the image.", bit_count / 8);
     image
 }
 
@@ -150,8 +145,6 @@ fn read_bytes_as_text(bytes: Vec<Byte>) -> String {
 }
 
 fn read_bytes_and_save_image(bytes: Vec<Byte>, output_path: &str) {
-    println!("num bytes: {}", bytes.len());
-
     let mut size: Vec<u32> = Vec::with_capacity(2);
     let mut start = 0;
     // Assume the size is in order width|height|
@@ -167,10 +160,11 @@ fn read_bytes_and_save_image(bytes: Vec<Byte>, output_path: &str) {
     let mut new_image = RgbaImage::new(width, height);
 
     // Skip the 10 bytes used to size and the last 4 that are the stopping sequence.
-    let byte_nums: Vec<u8> = bytes[10..bytes.len() - 4].to_vec().iter().map(|byte| byte.byte).collect();
+    let byte_nums: Vec<u8> = bytes[10..bytes.len() - Byte::ending_seq().len()].to_vec().iter().map(|byte| byte.byte).collect();
 
     let mut byte_iter = byte_nums.chunks(4);
 
+    // Convert bytes into an image, grouping bytes into chunks of 4 for each pixel.
     'y: for y in 0..height {
         for x in 0..width {
             if let Some(pixel) = byte_iter.next() {
